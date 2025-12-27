@@ -1,0 +1,7 @@
+# Replace the placeholder below with your GitHub username (e.g. @your-username)
+# This file tells GitHub to request review from the listed owner when files match.
+# Example:
+#   /Data_Type.php @your-username
+
+# Require a code owner review for changes to the main footer file.
+/Data_Type.php @ParasGupta-BCA

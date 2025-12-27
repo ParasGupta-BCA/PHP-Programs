@@ -1,0 +1,57 @@
+name: Footer integrity guard
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  check-footer:
+    name: Verify footer text hasn't been changed
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine base and head
+        id: refs
+        run: |
+          echo "EVENT_NAME=${{ github.event_name }}" >> $GITHUB_OUTPUT
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "BASE_SHA=${{ github.event.pull_request.base.sha }}" >> $GITHUB_OUTPUT
+            echo "HEAD_SHA=${{ github.event.pull_request.head.sha }}" >> $GITHUB_OUTPUT
+          else
+            echo "BASE_SHA=${{ github.event.before }}" >> $GITHUB_OUTPUT
+            echo "HEAD_SHA=${{ github.sha }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Get changed files
+        run: |
+          set -e
+          BASE=${{ steps.refs.outputs.BASE_SHA }}
+          HEAD=${{ steps.refs.outputs.HEAD_SHA }}
+          if [ -z "$BASE" ] || [ -z "$HEAD" ]; then
+            echo "Cannot determine base/head SHAs; skipping check." && exit 0
+          fi
+          git fetch --no-tags --depth=1 origin $BASE || true
+          git fetch --no-tags --depth=1 origin $HEAD || true
+          git diff --name-only $BASE $HEAD > changed.txt || true
+          echo "Changed files:" && cat changed.txt || true
+
+      - name: Fail if footer text modified
+        run: |
+          set -e
+          if grep -q "^Data_Type.php$" changed.txt; then
+            echo "Data_Type.php was changed; verifying footer text..."
+            # Show the file content from the PR HEAD and ensure the footer string exists verbatim
+            if ! git show ${{ steps.refs.outputs.HEAD_SHA }}:Data_Type.php | grep -q "Code Is Writen By Paras Gupta"; then
+              echo "ERROR: Footer text has been modified or removed in Data_Type.php." >&2
+              echo "Keep the exact footer text 'Code Is Writen By Paras Gupta' to proceed." >&2
+              exit 1
+            else
+              echo "Footer text preserved."
+            fi
+          else
+            echo "Data_Type.php not changed; nothing to verify."
+          fi
