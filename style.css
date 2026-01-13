@@ -124,7 +124,7 @@ body {
     gap: 8px;
     width: 100%;
     padding: 10px;
-    background: rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.05);
     color: var(--text-main);
     text-decoration: none;
     border-radius: 6px;
@@ -133,7 +133,7 @@ body {
 }
 
 .github-link:hover {
-    background: rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.1);
     color: #fff;
 }
 
@@ -232,11 +232,42 @@ pre[class*="language-"] {
     padding: 20px !important;
 }
 
+/* Resizer */
+.resizer {
+    height: 8px;
+    background-color: var(--bg-panel);
+    border-top: 1px solid var(--border);
+    cursor: row-resize;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background-color 0.2s;
+}
+
+.resizer:hover,
+.resizer.resizing {
+    background-color: var(--primary);
+}
+
+.resizer-handle {
+    width: 40px;
+    height: 4px;
+    background-color: var(--border);
+    border-radius: 2px;
+}
+
+.resizer:hover .resizer-handle {
+    background-color: white;
+}
+
 /* Terminal */
 .terminal-container {
     height: 250px;
+    /* Initial height */
+    min-height: 100px;
+    max-height: 80vh;
     background-color: var(--bg-panel);
-    border-top: 1px solid var(--border);
     display: flex;
     flex-direction: column;
 }
@@ -257,21 +288,32 @@ pre[class*="language-"] {
 
 .terminal-body {
     flex: 1;
-    overflow-y: auto;
-    padding: 15px;
-    font-family: var(--font-mono);
-    font-size: 0.9rem;
-    color: #e6edf3;
-    white-space: pre-wrap;
+    overflow: hidden;
+    /* Iframe handles its own scroll */
+    background-color: white;
+    /* Web preview usually needs light background */
+    position: relative;
+    padding: 0;
 }
 
-.terminal-line {
-    margin-bottom: 5px;
+#output-frame {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: white;
 }
 
-.text-muted { color: var(--text-muted); }
-.text-danger { color: #f85149; }
-.text-success { color: #3fb950; }
+.text-muted {
+    color: var(--text-muted);
+}
+
+.text-danger {
+    color: #f85149;
+}
+
+.text-success {
+    color: #3fb950;
+}
 
 .icon-btn {
     background: none;
@@ -284,7 +326,7 @@ pre[class*="language-"] {
 }
 
 .icon-btn:hover {
-    background: rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.1);
     color: #fff;
 }
 
@@ -305,7 +347,9 @@ pre[class*="language-"] {
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* Mobile Responsive */
@@ -313,7 +357,7 @@ pre[class*="language-"] {
     .app-container {
         flex-direction: column;
     }
-    
+
     .sidebar {
         width: 100%;
         height: 200px;

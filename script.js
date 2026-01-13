@@ -9,26 +9,40 @@ const currentFilenameEl = document.getElementById('current-filename');
 const runBtn = document.getElementById('run-btn');
 const outputConsole = document.getElementById('output-console');
 const clearConsoleBtn = document.getElementById('clear-console');
+const refreshFilesBtn = document.getElementById('refresh-files');
 
 let currentCode = '';
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     fetchFiles();
+
+    // Refresh button
+    if (refreshFilesBtn) {
+        refreshFilesBtn.addEventListener('click', () => {
+            fetchFiles();
+        });
+    }
 });
 
 // Fetch files from GitHub
 async function fetchFiles() {
     try {
-        const response = await fetch(API_URL);
+        fileListEl.innerHTML = '<div class="loading-spinner"><div class="spinner"></div></div>';
+
+        // Add timestamp to query to prevent aggressive caching
+        const response = await fetch(`${API_URL}?t=${new Date().getTime()}`, {
+            cache: 'no-store'
+        });
+
         if (!response.ok) throw new Error('Failed to load files');
         const data = await response.json();
-        
+
         fileListEl.innerHTML = ''; // Clear loading
-        
+
         // Filter for PHP files only
         const phpFiles = data.filter(file => file.name.endsWith('.php'));
-        
+
         if (phpFiles.length === 0) {
             fileListEl.innerHTML = '<li class="file-item">No PHP files found</li>';
             return;
@@ -55,15 +69,15 @@ async function loadFile(file, element) {
     currentFilenameEl.innerText = file.name;
     runBtn.disabled = true;
     runBtn.innerHTML = '<ion-icon name="hourglass-outline"></ion-icon> Loading...';
-    
+
     codeDisplayEl.innerHTML = '// Fetching code...';
-    
+
     try {
         const response = await fetch(file.download_url);
         const code = await response.text();
-        
+
         currentCode = code;
-        
+
         // Escape HTML for display
         const escapedCode = code
             .replace(/&/g, "&amp;")
@@ -71,15 +85,15 @@ async function loadFile(file, element) {
             .replace(/>/g, "&gt;");
 
         codeDisplayEl.innerHTML = escapedCode;
-        
+
         // Re-highlight using Prism
         Prism.highlightElement(codeDisplayEl);
-        
+
         runBtn.disabled = false;
         runBtn.innerHTML = '<ion-icon name="play"></ion-icon> Run Code';
-        
+
         // Log to terminal
-        logToTerminal(`Loaded file: ${file.name}`, 'text-muted');
+        renderOutput(`Loaded file: ${file.name}\nReady to execute...`, true);
 
     } catch (error) {
         codeDisplayEl.innerHTML = `// Error loading file: ${error.message}`;
@@ -92,10 +106,9 @@ runBtn.addEventListener('click', async () => {
     if (!currentCode) return;
 
     runBtn.disabled = true;
-    runBtn.innerHTML = '<div class="spinner" style="width:16px;height:16px;border-width:2px;"></div> Running...';
-    
-    logToTerminal('----------------------------------');
-    logToTerminal('Executing script...', 'text-muted');
+    runBtn.innerHTML = '<div class="spinner"></div> Running...';
+
+    renderOutput('Running script...', true);
 
     try {
         const response = await fetch(PISTON_API, {
@@ -113,40 +126,111 @@ runBtn.addEventListener('click', async () => {
         });
 
         const result = await response.json();
-        
+
         if (result.run) {
-            if (result.run.stdout) {
-                logToTerminal(result.run.stdout);
-            }
+            // Combine stdout and stderr
+            let output = result.run.stdout || '';
             if (result.run.stderr) {
-                logToTerminal(result.run.stderr, 'text-danger');
+                output += `\n\n[Error Output]:\n${result.run.stderr}`;
             }
-            if (!result.run.stdout && !result.run.stderr) {
-                logToTerminal('Script executed successfully (No output).', 'text-success');
+
+            if (!output) {
+                output = 'Script executed successfully (No output).';
             }
+
+            renderOutput(output);
         } else {
-            logToTerminal('Error: Could not execute code.', 'text-danger');
+            renderOutput('Error: Could not execute code.', true);
         }
 
     } catch (error) {
-        logToTerminal(`Execution API Error: ${error.message}`, 'text-danger');
+        renderOutput(`Execution API Error: ${error.message}`, true);
     }
 
     runBtn.disabled = false;
     runBtn.innerHTML = '<ion-icon name="play"></ion-icon> Run Code';
 });
 
-// Helper: Log to custom terminal
-function logToTerminal(message, cssClass = '') {
-    const line = document.createElement('div');
-    line.className = `terminal-line ${cssClass}`;
-    line.innerText = message;
-    outputConsole.appendChild(line);
-    // Auto scroll to bottom
-    outputConsole.scrollTop = outputConsole.scrollHeight;
+// Render output to Iframe
+function renderOutput(content, isSystemMessage = false) {
+    const frame = document.getElementById('output-frame');
+    const doc = frame.contentDocument || frame.contentWindow.document;
+
+    doc.open();
+
+    if (isSystemMessage) {
+        // Render as styled system message
+        doc.write(`
+            <html>
+            <head>
+                <style>
+                    body { font-family: monospace; padding: 20px; color: #555; }
+                </style>
+            </head>
+            <body>${content}</body>
+            </html>
+        `);
+    } else {
+        // Check if content looks like full HTML
+        if (content.trim().toLowerCase().includes('<html') || content.trim().toLowerCase().includes('<body')) {
+            // Render as is (HTML)
+            doc.write(content);
+        } else {
+            // Render as plaintext wrapped in pre
+            doc.write(`
+                <html>
+                <head>
+                    <style>
+                        body { margin: 0; padding: 15px; background: #fff; font-family: 'Courier New', Courier, monospace; }
+                        pre { white-space: pre-wrap; word-wrap: break-word; }
+                    </style>
+                </head>
+                <body><pre>${content.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre></body>
+                </html>
+            `);
+        }
+    }
+
+    doc.close();
 }
 
-// Clear console
+// Clear output
 clearConsoleBtn.addEventListener('click', () => {
-    outputConsole.innerHTML = '<div class="terminal-line text-muted">Console cleared.</div>';
+    renderOutput('Ready to execute...', true);
+});
+
+// Resizer Logic
+const resizer = document.getElementById('resizer');
+const terminalContainer = document.getElementById('terminal-container');
+const editorContainer = document.getElementById('editor-container');
+
+let isResizing = false;
+
+resizer.addEventListener('mousedown', (e) => {
+    isResizing = true;
+    resizer.classList.add('resizing');
+    document.body.style.cursor = 'row-resize';
+    document.body.style.userSelect = 'none'; // Prevent text selection
+});
+
+document.addEventListener('mousemove', (e) => {
+    if (!isResizing) return;
+
+    // Calculate new height
+    // Total height - mouse Y position
+    const containerRect = document.querySelector('.main-editor').getBoundingClientRect();
+    const newHeight = containerRect.bottom - e.clientY;
+
+    if (newHeight >= 100 && newHeight <= containerRect.height - 100) {
+        terminalContainer.style.height = `${newHeight}px`;
+    }
+});
+
+document.addEventListener('mouseup', () => {
+    if (isResizing) {
+        isResizing = false;
+        resizer.classList.remove('resizing');
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
+    }
 });

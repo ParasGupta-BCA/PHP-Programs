@@ -32,7 +32,12 @@
             </div>
 
             <div class="file-list-container">
-                <h3>Explorer</h3>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding-right: 20px;">
+                    <h3>Explorer</h3>
+                    <button id="refresh-files" class="icon-btn" title="Refresh File List">
+                        <ion-icon name="refresh-outline"></ion-icon>
+                    </button>
+                </div>
                 <ul id="file-list" class="file-list">
                     <!-- Files will be injected here -->
                     <div class="loading-spinner">
@@ -65,19 +70,24 @@
             </div>
 
             <!-- Code Editor Area -->
-            <div class="editor-container">
+            <div class="editor-container" id="editor-container">
                 <pre><code id="code-display" class="language-php">// Select a file from the sidebar to view code...</code></pre>
             </div>
 
+            <!-- Resizer Handle -->
+            <div id="resizer" class="resizer">
+                <div class="resizer-handle"></div>
+            </div>
+
             <!-- Terminal/Output Area -->
-            <div class="terminal-container">
+            <div class="terminal-container" id="terminal-container">
                 <div class="terminal-header">
                     <span><ion-icon name="terminal-outline"></ion-icon> Terminal Output</span>
                     <button id="clear-console" class="icon-btn" title="Clear Console"><ion-icon
                             name="trash-outline"></ion-icon></button>
                 </div>
-                <div id="output-console" class="terminal-body">
-                    <div class="terminal-line text-muted">Ready to execute...</div>
+                <div class="terminal-body">
+                    <iframe id="output-frame" title="Output" sandbox="allow-scripts allow-same-origin"></iframe>
                 </div>
             </div>
         </main>
