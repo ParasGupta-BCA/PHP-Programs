@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP Portfolio | Paras Gupta</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <!-- PrismJS for Syntax Highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <ion-icon name="logo-github"></ion-icon>
+                    <span>PHP Repos</span>
+                </div>
+                <p class="subtitle">@ParasGupta-BCA</p>
+            </div>
+            
+            <div class="file-list-container">
+                <h3>Explorer</h3>
+                <ul id="file-list" class="file-list">
+                    <!-- Files will be injected here -->
+                    <div class="loading-spinner">
+                        <div class="spinner"></div>
+                    </div>
+                </ul>
+            </div>
+
+            <div class="sidebar-footer">
+                <a href="https://github.com/ParasGupta-BCA/PHP-Programs" target="_blank" class="github-link">
+                    <ion-icon name="open-outline"></ion-icon> View on GitHub
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-editor">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="current-file">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                    <span id="current-filename">Select a file to view</span>
+                </div>
+                <div class="actions">
+                    <button id="run-btn" class="btn btn-primary" disabled>
+                        <ion-icon name="play"></ion-icon> Run Code
+                    </button>
+                    <span class="badge">PHP 8.2</span>
+                </div>
+            </div>
+
+            <!-- Code Editor Area -->
+            <div class="editor-container">
+                <pre><code id="code-display" class="language-php">// Select a file from the sidebar to view code...</code></pre>
+            </div>
+
+            <!-- Terminal/Output Area -->
+            <div class="terminal-container">
+                <div class="terminal-header">
+                    <span><ion-icon name="terminal-outline"></ion-icon> Terminal Output</span>
+                    <button id="clear-console" class="icon-btn" title="Clear Console"><ion-icon name="trash-outline"></ion-icon></button>
+                </div>
+                <div id="output-console" class="terminal-body">
+                    <div class="terminal-line text-muted">Ready to execute...</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Prism JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
