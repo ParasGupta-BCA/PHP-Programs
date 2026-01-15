@@ -167,7 +167,7 @@ function renderOutput(content, isSystemMessage = false) {
                     body { 
                         font-family: 'JetBrains Mono', monospace; 
                         padding: 20px; 
-                        color: #8b949e; 
+                        color: #ffffff; 
                         background-color: #0d1117;
                     }
                 </style>
@@ -182,7 +182,7 @@ function renderOutput(content, isSystemMessage = false) {
             const styleInjection = `
                 <style>
                     body { 
-                        color: #c9d1d9; 
+                        color: #ffffff; 
                         background-color: transparent; 
                         font-family: 'JetBrains Mono', Courier, monospace;
                     } 
@@ -205,7 +205,7 @@ function renderOutput(content, isSystemMessage = false) {
                             margin: 0; 
                             padding: 15px; 
                             background: #0d1117; 
-                            color: #c9d1d9;
+                            color: #ffffff;
                             font-family: 'JetBrains Mono', Courier, monospace; 
                         }
                         pre { white-space: pre-wrap; word-wrap: break-word; }
