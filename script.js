@@ -164,7 +164,12 @@ function renderOutput(content, isSystemMessage = false) {
             <html>
             <head>
                 <style>
-                    body { font-family: monospace; padding: 20px; color: #555; }
+                    body { 
+                        font-family: 'JetBrains Mono', monospace; 
+                        padding: 20px; 
+                        color: #8b949e; 
+                        background-color: #0d1117;
+                    }
                 </style>
             </head>
             <body>${content}</body>
@@ -181,7 +186,13 @@ function renderOutput(content, isSystemMessage = false) {
                 <html>
                 <head>
                     <style>
-                        body { margin: 0; padding: 15px; background: #fff; font-family: 'Courier New', Courier, monospace; }
+                        body { 
+                            margin: 0; 
+                            padding: 15px; 
+                            background: #0d1117; 
+                            color: #c9d1d9;
+                            font-family: 'JetBrains Mono', Courier, monospace; 
+                        }
                         pre { white-space: pre-wrap; word-wrap: break-word; }
                     </style>
                 </head>
