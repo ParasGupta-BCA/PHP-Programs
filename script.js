@@ -73,7 +73,7 @@ async function loadFile(file, element) {
     codeDisplayEl.innerHTML = '// Fetching code...';
 
     try {
-        const response = await fetch(file.download_url);
+        const response = await fetch(`${file.download_url}?t=${new Date().getTime()}`);
         const code = await response.text();
 
         currentCode = code;
