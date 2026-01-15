@@ -350,7 +350,8 @@ pre[class*="language-"] {
     border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    /* justify-content: space-between; -- Changed to flex-start to align title left */
+    justify-content: flex-start;
     padding: 0 15px;
 }
 
@@ -380,7 +381,7 @@ pre[class*="language-"] {
 }
 
 .terminal-title {
-    flex: 1;
+    /* flex: 1; -- Removed to prevent taking up all space */
     display: flex;
     align-items: center;
     gap: 8px;
@@ -389,6 +390,11 @@ pre[class*="language-"] {
     color: var(--text-muted);
     font-weight: 600;
     letter-spacing: 0.5px;
+}
+
+/* Push the trash button to the far right */
+.terminal-header .icon-btn {
+    margin-left: auto;
 }
 
 .terminal-body {
