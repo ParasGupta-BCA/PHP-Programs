@@ -204,7 +204,7 @@ function renderOutput(content, isSystemMessage = false) {
                         body { 
                             margin: 0; 
                             padding: 15px; 
-                            background: #ffffffff; 
+                            background: #0d1117; 
                             color: #c9d1d9;
                             font-family: 'JetBrains Mono', Courier, monospace; 
                         }
