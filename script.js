@@ -30,10 +30,12 @@ async function fetchFiles() {
     try {
         fileListEl.innerHTML = '<div class="loading-spinner"><div class="spinner"></div></div>';
 
-        // Fetch without timestamp to avoid potential API issues
-        const response = await fetch(API_URL);
+        // Add timestamp to query to prevent aggressive caching
+        const response = await fetch(`${API_URL}?t=${new Date().getTime()}`, {
+            cache: 'no-store'
+        });
 
-        if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        if (!response.ok) throw new Error('Failed to load files');
         const data = await response.json();
 
         fileListEl.innerHTML = ''; // Clear loading
@@ -71,7 +73,7 @@ async function loadFile(file, element) {
     codeDisplayEl.innerHTML = '// Fetching code...';
 
     try {
-        const response = await fetch(file.download_url);
+        const response = await fetch(`${file.download_url}?t=${new Date().getTime()}`);
         const code = await response.text();
 
         currentCode = code;
@@ -162,7 +164,12 @@ function renderOutput(content, isSystemMessage = false) {
             <html>
             <head>
                 <style>
-                    body { font-family: 'JetBrains Mono', monospace; padding: 20px; color: #555; background-color: #fff; }
+                    body { 
+                        font-family: 'JetBrains Mono', monospace; 
+                        padding: 20px; 
+                        color: #8b949e; 
+                        background-color: #0d1117;
+                    }
                 </style>
             </head>
             <body>${content}</body>
@@ -171,15 +178,36 @@ function renderOutput(content, isSystemMessage = false) {
     } else {
         // Check if content looks like full HTML
         if (content.trim().toLowerCase().includes('<html') || content.trim().toLowerCase().includes('<body')) {
-            // Render as is (HTML) - Default browser style (White bg, black text)
-            doc.write(content);
+            // Render as is (HTML) but inject default styles for visibility
+            const styleInjection = `
+                <style>
+                    body { 
+                        color: #c9d1d9; 
+                        background-color: transparent; 
+                        font-family: 'JetBrains Mono', Courier, monospace;
+                    } 
+                    h1, h2, h3, h4, h5, h6 { color: #e6edf3; }
+                </style>
+            `;
+            // Try to inject in head, otherwise prepend
+            if (content.includes('<head>')) {
+                doc.write(content.replace('<head>', `<head>${styleInjection}`));
+            } else {
+                doc.write(styleInjection + content);
+            }
         } else {
             // Render as plaintext wrapped in pre
             doc.write(`
                 <html>
                 <head>
                     <style>
-                        body { margin: 0; padding: 15px; background: #fff; font-family: 'Courier New', Courier, monospace; color: #333; }
+                        body { 
+                            margin: 0; 
+                            padding: 15px; 
+                            background: #0d1117; 
+                            color: #c9d1d9;
+                            font-family: 'JetBrains Mono', Courier, monospace; 
+                        }
                         pre { white-space: pre-wrap; word-wrap: break-word; }
                     </style>
                 </head>
