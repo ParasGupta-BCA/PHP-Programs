@@ -234,3 +234,35 @@ document.addEventListener('mouseup', () => {
         document.body.style.userSelect = '';
     }
 });
+// Mobile Sidebar Logic
+const sidebarToggleBtn = document.getElementById('sidebar-toggle');
+const sidebar = document.querySelector('.sidebar');
+const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+function toggleSidebar() {
+    sidebar.classList.toggle('open');
+    sidebarOverlay.classList.toggle('active');
+}
+
+function closeSidebar() {
+    sidebar.classList.remove('open');
+    sidebarOverlay.classList.remove('active');
+}
+
+if (sidebarToggleBtn) {
+    sidebarToggleBtn.addEventListener('click', toggleSidebar);
+}
+
+if (sidebarOverlay) {
+    sidebarOverlay.addEventListener('click', closeSidebar);
+}
+
+// Close sidebar when selecting a file on mobile
+// We need to modify the loadFile function or intercept the click. 
+// Since loadFile is called by onclick in HTML, we can add a global listener for file-items or modify fetchFiles.
+// A simpler way without touching fetchFiles too much is:
+document.getElementById('file-list').addEventListener('click', (e) => {
+    if (e.target.closest('.file-item') && window.innerWidth <= 768) {
+        closeSidebar();
+    }
+});

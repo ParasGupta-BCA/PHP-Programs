@@ -21,6 +21,7 @@
 
 <body>
     <div class="app-container">
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
@@ -57,6 +58,9 @@
         <main class="main-editor">
             <!-- Top Bar -->
             <div class="top-bar">
+                <button id="sidebar-toggle" class="icon-btn sidebar-toggle">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </button>
                 <div class="current-file">
                     <ion-icon name="document-text-outline"></ion-icon>
                     <span id="current-filename">Select a file to view</span>
