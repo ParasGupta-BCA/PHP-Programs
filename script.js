@@ -30,12 +30,10 @@ async function fetchFiles() {
     try {
         fileListEl.innerHTML = '<div class="loading-spinner"><div class="spinner"></div></div>';
 
-        // Add timestamp to query to prevent aggressive caching
-        const response = await fetch(`${API_URL}?t=${new Date().getTime()}`, {
-            cache: 'no-store'
-        });
+        // Fetch without timestamp to avoid potential API issues
+        const response = await fetch(API_URL);
 
-        if (!response.ok) throw new Error('Failed to load files');
+        if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         const data = await response.json();
 
         fileListEl.innerHTML = ''; // Clear loading
@@ -73,7 +71,7 @@ async function loadFile(file, element) {
     codeDisplayEl.innerHTML = '// Fetching code...';
 
     try {
-        const response = await fetch(`${file.download_url}?t=${new Date().getTime()}`);
+        const response = await fetch(file.download_url);
         const code = await response.text();
 
         currentCode = code;
