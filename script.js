@@ -178,8 +178,23 @@ function renderOutput(content, isSystemMessage = false) {
     } else {
         // Check if content looks like full HTML
         if (content.trim().toLowerCase().includes('<html') || content.trim().toLowerCase().includes('<body')) {
-            // Render as is (HTML)
-            doc.write(content);
+            // Render as is (HTML) but inject default styles for visibility
+            const styleInjection = `
+                <style>
+                    body { 
+                        color: #c9d1d9; 
+                        background-color: transparent; 
+                        font-family: 'JetBrains Mono', Courier, monospace;
+                    } 
+                    h1, h2, h3, h4, h5, h6 { color: #e6edf3; }
+                </style>
+            `;
+            // Try to inject in head, otherwise prepend
+            if (content.includes('<head>')) {
+                doc.write(content.replace('<head>', `<head>${styleInjection}`));
+            } else {
+                doc.write(styleInjection + content);
+            }
         } else {
             // Render as plaintext wrapped in pre
             doc.write(`
