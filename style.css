@@ -412,7 +412,7 @@ pre[class*="language-"] {
     border: none;
     /* Invert colors for iframe if it contains white bg content defaults, 
        but script.js handles styling, checks script.js to ensure dark mode output */
-    background-color: #0d1117;
+    background-color: #ffffff;
 }
 
 /* Utility Helper for Icon Button */
