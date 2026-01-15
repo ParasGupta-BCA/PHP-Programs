@@ -26,43 +26,92 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Fetch files from GitHub
-async function fetchFiles() {
-    try {
+async function fetchFiles(isBackground = false) {
+    if (!isBackground) {
         fileListEl.innerHTML = '<div class="loading-spinner"><div class="spinner"></div></div>';
+    }
 
+    let data = [];
+
+    try {
         // Add timestamp to query to prevent aggressive caching
+        // Rate Limit Note: 60 requests/hour for unauthenticated IPs. 
+        // Polling every 60s consumes this entirely. Ideally, increase interval or use auth.
         const response = await fetch(`${API_URL}?t=${new Date().getTime()}`, {
             cache: 'no-store'
         });
 
-        if (!response.ok) throw new Error('Failed to load files');
-        const data = await response.json();
-
-        fileListEl.innerHTML = ''; // Clear loading
-
-        // Filter for PHP files only
-        const phpFiles = data.filter(file => file.name.endsWith('.php'));
-
-        if (phpFiles.length === 0) {
-            fileListEl.innerHTML = '<li class="file-item">No PHP files found</li>';
-            return;
-        }
-
-        phpFiles.forEach(file => {
-            const li = document.createElement('li');
-            li.className = 'file-item';
-            li.innerHTML = `<ion-icon name="logo-php"></ion-icon> ${file.name}`;
-            li.onclick = () => loadFile(file, li);
-            fileListEl.appendChild(li);
-        });
+        if (!response.ok) throw new Error(`GitHub API Error: ${response.status}`);
+        data = await response.json();
 
     } catch (error) {
-        fileListEl.innerHTML = `<li class="file-item" style="color:var(--danger)">Error: ${error.message}</li>`;
+        if (!isBackground) {
+            console.warn('GitHub API failed, using fallback file list.', error);
+        }
+
+        // Fallback file list to ensure the site works even if API rate limit is hit
+        const fallbackFiles = [
+            "Addition_program.php",
+            "Constant.php",
+            "Constants.php",
+            "Data_Type.php",
+            "Dot_Operator.php",
+            "HelloWorld.php",
+            "Increment-&-Decrement-Operators.php",
+            "Operator.php",
+            "String.php",
+            "array.php",
+            "bitwise.php",
+            "calculate_truth_table.php",
+            "code.php",
+            "leapyear.php",
+            "spaceship_opratior.php",
+            "stringopraters.php",
+            "truth_tables.php"
+        ];
+
+        data = fallbackFiles.map(name => ({
+            name: name,
+            download_url: `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/${name}`
+        }));
     }
+
+    // Filter for PHP files only
+    const phpFiles = data.filter(file => file.name.endsWith('.php'));
+
+    // Check if files changed
+    const newFilesJSON = JSON.stringify(phpFiles.map(f => f.name).sort());
+    if (isBackground && newFilesJSON === displayedFilesJSON) {
+        return; // No changes, do nothing
+    }
+
+    displayedFilesJSON = newFilesJSON;
+    fileListEl.innerHTML = ''; // Clear list to rebuild
+
+    if (phpFiles.length === 0) {
+        fileListEl.innerHTML = '<li class="file-item">No PHP files found</li>';
+        return;
+    }
+
+    phpFiles.forEach(file => {
+        const li = document.createElement('li');
+        li.className = 'file-item';
+        if (currentActiveFile && currentActiveFile.name === file.name) {
+            li.classList.add('active');
+        }
+        li.innerHTML = `<ion-icon name="logo-php"></ion-icon> ${file.name}`;
+        li.onclick = () => loadFile(file, li);
+        fileListEl.appendChild(li);
+    });
 }
+
+// Poll for updates every 60 seconds
+setInterval(() => fetchFiles(true), 60000);
 
 // Load specific file content
 async function loadFile(file, element) {
+    currentActiveFile = file; // Track active file
+
     // UI Update
     document.querySelectorAll('.file-item').forEach(el => el.classList.remove('active'));
     element.classList.add('active');
