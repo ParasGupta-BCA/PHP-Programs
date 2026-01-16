@@ -193,6 +193,39 @@ body {
     box-shadow: var(--shadow-sm);
 }
 
+.copyright {
+    margin-top: 15px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-align: center;
+    line-height: 1.6;
+}
+
+.copyright a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.copyright a:hover {
+    text-decoration: underline;
+}
+
+.heart-icon {
+    color: #ed254e;
+    font-size: 0.8rem;
+    vertical-align: middle;
+    animation: heart-beat 1.5s infinite;
+}
+
+@keyframes heart-beat {
+    0% { transform: scale(1); }
+    25% { transform: scale(1.2); }
+    50% { transform: scale(1); }
+    75% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
 /* Main Area */
 .main-editor {
     flex: 1;
