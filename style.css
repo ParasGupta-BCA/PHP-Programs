@@ -165,22 +165,25 @@ body {
 }
 
 .sidebar-footer {
-    padding: 20px;
+    padding: 15px 20px;
     border-top: 1px solid var(--glass-border);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .github-link {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
     width: 100%;
-    padding: 12px;
+    padding: 8px;
     background: rgba(255, 255, 255, 0.03);
     color: var(--text-main);
     text-decoration: none;
-    border-radius: 8px;
-    font-size: 0.9rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
     font-weight: 500;
     transition: all 0.3s;
     border: 1px solid var(--glass-border);
@@ -194,36 +197,55 @@ body {
 }
 
 .copyright {
-    margin-top: 15px;
-    font-size: 0.75rem;
+    margin-top: 0;
+    font-size: 0.7rem;
     color: var(--text-muted);
     text-align: center;
-    line-height: 1.6;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    white-space: nowrap;
 }
 
 .copyright a {
-    color: var(--primary);
+    color: var(--text-muted);
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
+    transition: color 0.2s;
 }
 
 .copyright a:hover {
-    text-decoration: underline;
+    color: var(--primary);
 }
 
 .heart-icon {
     color: #ed254e;
-    font-size: 0.8rem;
-    vertical-align: middle;
+    font-size: 0.75rem;
     animation: heart-beat 1.5s infinite;
 }
 
 @keyframes heart-beat {
-    0% { transform: scale(1); }
-    25% { transform: scale(1.2); }
-    50% { transform: scale(1); }
-    75% { transform: scale(1.2); }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+
+    25% {
+        transform: scale(1.2);
+    }
+
+    50% {
+        transform: scale(1);
+    }
+
+    75% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 /* Main Area */
