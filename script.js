@@ -11,7 +11,12 @@ const outputConsole = document.getElementById('output-console');
 const clearConsoleBtn = document.getElementById('clear-console');
 const refreshFilesBtn = document.getElementById('refresh-files');
 
+const CACHE_KEY = 'php_repos_cache';
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
 let currentCode = '';
+let currentActiveFile = null;
+let displayedFilesJSON = '';
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
@@ -20,6 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Refresh button
     if (refreshFilesBtn) {
         refreshFilesBtn.addEventListener('click', () => {
+            // Force refresh: clear cache and fetch
+            localStorage.removeItem(CACHE_KEY);
             fetchFiles();
         });
     }
@@ -28,25 +35,46 @@ document.addEventListener('DOMContentLoaded', () => {
 // Fetch files from GitHub
 async function fetchFiles(isBackground = false) {
     if (!isBackground) {
-        fileListEl.innerHTML = '<div class="loading-spinner"><div class="spinner"></div></div>';
+        // checks if we already have files displayed (optimization)
+        if (fileListEl.children.length === 0 || fileListEl.querySelector('.loading-spinner')) {
+             fileListEl.innerHTML = '<div class="loading-spinner"><div class="spinner"></div></div>';
+        }
     }
 
     let data = [];
+    let usedCache = false;
 
     try {
-        // Add timestamp to query to prevent aggressive caching
-        // Rate Limit Note: 60 requests/hour for unauthenticated IPs. 
-        // Polling every 60s consumes this entirely. Ideally, increase interval or use auth.
-        const response = await fetch(`${API_URL}?t=${new Date().getTime()}`, {
-            cache: 'no-store'
-        });
+        // 1. Try LocalStorage Cache first
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+            const parsed = JSON.parse(cached);
+            if (Date.now() - parsed.timestamp < CACHE_DURATION) {
+                // Cache is valid
+                data = parsed.data;
+                usedCache = true;
+                if (!isBackground) console.log('Using cached file list.');
+            }
+        }
 
-        if (!response.ok) throw new Error(`GitHub API Error: ${response.status}`);
-        data = await response.json();
+        // 2. Data not in cache or expired, fetch from API
+        if (!usedCache) {
+             // Remove timestamp to allow browser-level caching (304 Not Modified)
+            const response = await fetch(API_URL);
+
+            if (!response.ok) throw new Error(`GitHub API Error: ${response.status}`);
+            data = await response.json();
+            
+            // Save to cache
+            localStorage.setItem(CACHE_KEY, JSON.stringify({
+                timestamp: Date.now(),
+                data: data
+            }));
+        }
 
     } catch (error) {
         if (!isBackground) {
-            console.warn('GitHub API failed, using fallback file list.', error);
+            console.warn('GitHub API failed or limit reached, using fallback file list.', error);
         }
 
         // Fallback file list to ensure the site works even if API rate limit is hit
@@ -105,8 +133,8 @@ async function fetchFiles(isBackground = false) {
     });
 }
 
-// Poll for updates every 60 seconds
-setInterval(() => fetchFiles(true), 60000);
+// Poll for updates every 5 minutes (reduced from 60s to save API calls)
+setInterval(() => fetchFiles(true), 300000);
 
 // Load specific file content
 async function loadFile(file, element) {
