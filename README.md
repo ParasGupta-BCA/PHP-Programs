@@ -16,7 +16,23 @@ Check out the interactive web version of this repository:
 Below is an automatically updated list of all PHP programs available in this repository.
 
 <!-- FILES_START -->
-<!-- This section is automatically updated by GitHub Actions -->
+- [📄 Addition_program.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/Addition_program.php)
+- [📄 Constant.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/Constant.php)
+- [📄 Constants.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/Constants.php)
+- [📄 Data_Type.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/Data_Type.php)
+- [📄 Dot_Operator.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/Dot_Operator.php)
+- [📄 HelloWorld.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/HelloWorld.php)
+- [📄 Increment-&-Decrement-Operators.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/Increment-&-Decrement-Operators.php)
+- [📄 Operator.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/Operator.php)
+- [📄 String.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/String.php)
+- [📄 array.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/array.php)
+- [📄 bitwise.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/bitwise.php)
+- [📄 calculate_truth_table.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/calculate_truth_table.php)
+- [📄 code.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/code.php)
+- [📄 leapyear.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/leapyear.php)
+- [📄 spaceship_opratior.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/spaceship_opratior.php)
+- [📄 stringopraters.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/stringopraters.php)
+- [📄 truth_tables.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/truth_tables.php)
 <!-- FILES_END -->
 
 ---
