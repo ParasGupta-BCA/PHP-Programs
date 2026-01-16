@@ -11,7 +11,7 @@ const outputConsole = document.getElementById('output-console');
 const clearConsoleBtn = document.getElementById('clear-console');
 const refreshFilesBtn = document.getElementById('refresh-files');
 
-const CACHE_KEY = 'php_repos_cache';
+const CACHE_KEY = 'php_repos_cache_v1';
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
 let currentCode = '';
@@ -37,7 +37,7 @@ async function fetchFiles(isBackground = false) {
     if (!isBackground) {
         // checks if we already have files displayed (optimization)
         if (fileListEl.children.length === 0 || fileListEl.querySelector('.loading-spinner')) {
-             fileListEl.innerHTML = '<div class="loading-spinner"><div class="spinner"></div></div>';
+            fileListEl.innerHTML = '<div class="loading-spinner"><div class="spinner"></div></div>';
         }
     }
 
@@ -59,12 +59,12 @@ async function fetchFiles(isBackground = false) {
 
         // 2. Data not in cache or expired, fetch from API
         if (!usedCache) {
-             // Remove timestamp to allow browser-level caching (304 Not Modified)
+            // Remove timestamp to allow browser-level caching (304 Not Modified)
             const response = await fetch(API_URL);
 
             if (!response.ok) throw new Error(`GitHub API Error: ${response.status}`);
             data = await response.json();
-            
+
             // Save to cache
             localStorage.setItem(CACHE_KEY, JSON.stringify({
                 timestamp: Date.now(),
