@@ -24,8 +24,8 @@
      * 2) Relational operator --> (//),(>),(<),(<==),(>==),(==),(!=),(===),(!==),(<>),(<=>)
      * 3) Assignment operator
      * 4) Increment/Decrement operator --> (++),(--)
-     * 5) Logical operator
-     * 6) String operator
+     * 5) Logical operator --> (&&),(||),(!)
+     * 6) String operator (Also called Concat operator) --> (.),(.=)
      * 7) Array operator
      * 8) Conditional assignment operator
      *  
@@ -107,6 +107,53 @@
 
     echo "D= ".$d."<br>","A= ".$a."<br>","C= ".$c."<br>";
     echo "<br>";
+
+    //Logical operator
+    $a=50;
+    $b=60;
+
+    echo "Logical operator:<br>";
+    echo "<br>";
+
+    // (&&) AND operator
+
+    if($a>25 && $b>10)
+        echo "True<br>";
+    else
+        echo "False<br>";
+
+    // (||) OR operator
+
+    if($a>60 || $b>70)
+        echo "True<br>";
+    else
+        echo "False<br>";
+
+    // (!) NOT operator
+
+    if(!($a>25 && $b>10))
+        echo "True<br>";
+    else
+        echo "False<br>";
+
+    echo "<br>";
+
+    /*** 
+     * Q2. Now What Will Be Output Of This Code:
+     * 
+     * $a=10;
+     * $b=20;
+     * 
+     *     if($a and $b)
+     *     echo "True<br>";
+     *  else
+     *     echo "False<br>";
+     *
+     * 
+     * Answer: True (Becouse Both Numbers Having (1) Not Zero
+     *         If We Write B=0 Then It Will Give False)
+     *         
+     * ***/
 
     ?>
     </h1>
