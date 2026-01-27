@@ -60,6 +60,11 @@
                         <ion-icon name="refresh-outline"></ion-icon>
                     </button>
                 </div>
+                <!-- Search Bar -->
+                <div class="search-container">
+                    <ion-icon name="search-outline"></ion-icon>
+                    <input type="text" id="file-search" placeholder="Search programs...">
+                </div>
                 <ul id="file-list" class="file-list">
                     <!-- Files will be injected here -->
                     <div class="loading-spinner">
@@ -91,6 +96,9 @@
                     <span id="current-filename">Select a file to view</span>
                 </div>
                 <div class="actions">
+                    <button id="copy-btn" class="icon-btn" title="Copy Code" disabled style="margin-right: 5px;">
+                        <ion-icon name="copy-outline"></ion-icon>
+                    </button>
                     <button id="run-btn" class="btn btn-primary" disabled>
                         <ion-icon name="play"></ion-icon> Run Code
                     </button>

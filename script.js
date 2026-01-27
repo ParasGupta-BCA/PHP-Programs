@@ -10,6 +10,8 @@ const runBtn = document.getElementById('run-btn');
 const outputConsole = document.getElementById('output-console');
 const clearConsoleBtn = document.getElementById('clear-console');
 const refreshFilesBtn = document.getElementById('refresh-files');
+const fileSearchInput = document.getElementById('file-search');
+const copyBtn = document.getElementById('copy-btn');
 
 const CACHE_KEY = 'php_repos_cache_v1';
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
@@ -29,6 +31,19 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.removeItem(CACHE_KEY);
             fetchFiles();
         });
+    }
+
+    // Search functionality
+    if (fileSearchInput) {
+        fileSearchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            filterFiles(searchTerm);
+        });
+    }
+
+    // Copy functionality
+    if (copyBtn) {
+        copyBtn.addEventListener('click', copyToClipboard);
     }
 });
 
@@ -84,10 +99,16 @@ async function fetchFiles(isBackground = false) {
             "Constants.php",
             "Data_Type.php",
             "Dot_Operator.php",
+            "Even_Odd.php",
+            "Factorial.php",
+            "Fibonacci.php",
+            "For_Loop_Table.php",
             "HelloWorld.php",
             "Increment-&-Decrement-Operators.php",
             "Operator.php",
+            "Prime_Number.php",
             "String.php",
+            "Switch_Case.php",
             "array.php",
             "bitwise.php",
             "calculate_truth_table.php",
@@ -133,6 +154,19 @@ async function fetchFiles(isBackground = false) {
     });
 }
 
+// Filter files based on search term
+function filterFiles(term) {
+    const items = fileListEl.querySelectorAll('.file-item');
+    items.forEach(item => {
+        const fileName = item.innerText.toLowerCase();
+        if (fileName.includes(term)) {
+            item.style.display = 'flex';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
+
 // Poll for updates every 5 minutes (reduced from 60s to save API calls)
 setInterval(() => fetchFiles(true), 300000);
 
@@ -168,6 +202,8 @@ async function loadFile(file, element) {
 
         runBtn.disabled = false;
         runBtn.innerHTML = '<ion-icon name="play"></ion-icon> Run Code';
+        
+        if (copyBtn) copyBtn.disabled = false;
 
         // Log to terminal
         renderOutput(`Loaded file: ${file.name}\nReady to execute...`, true);
@@ -175,6 +211,38 @@ async function loadFile(file, element) {
     } catch (error) {
         codeDisplayEl.innerHTML = `// Error loading file: ${error.message}`;
         runBtn.innerHTML = '<ion-icon name="alert-circle"></ion-icon> Error';
+        if (copyBtn) copyBtn.disabled = true;
+    }
+}
+
+// Copy Code to Clipboard
+async function copyToClipboard() {
+    if (!currentCode) return;
+
+    try {
+        await navigator.clipboard.writeText(currentCode);
+        
+        // Show success tooltip
+        const tooltip = document.createElement('div');
+        tooltip.className = 'copy-tooltip';
+        tooltip.innerText = 'Copied!';
+        copyBtn.parentElement.appendChild(tooltip);
+        
+        setTimeout(() => tooltip.classList.add('show'), 10);
+        setTimeout(() => {
+            tooltip.classList.remove('show');
+            setTimeout(() => tooltip.remove(), 300);
+        }, 2000);
+
+        // Change icon temporarily
+        const originalIcon = copyBtn.querySelector('ion-icon').name;
+        copyBtn.querySelector('ion-icon').name = 'checkmark-outline';
+        setTimeout(() => {
+            copyBtn.querySelector('ion-icon').name = originalIcon;
+        }, 2000);
+
+    } catch (err) {
+        console.error('Failed to copy: ', err);
     }
 }
 
