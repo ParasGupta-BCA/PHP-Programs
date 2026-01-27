@@ -441,34 +441,52 @@ const editorContainer = document.getElementById('editor-container');
 
 let isResizing = false;
 
-resizer.addEventListener('mousedown', (e) => {
+resizer.addEventListener('mousedown', startResizing);
+resizer.addEventListener('touchstart', (e) => {
+    startResizing(e.touches[0]);
+}, { passive: false });
+
+function startResizing(e) {
     isResizing = true;
     resizer.classList.add('resizing');
     document.body.style.cursor = 'row-resize';
-    document.body.style.userSelect = 'none'; // Prevent text selection
-});
+    document.body.style.userSelect = 'none';
+}
 
-document.addEventListener('mousemove', (e) => {
+function handleMouseMove(e) {
     if (!isResizing) return;
 
-    // Calculate new height
-    // Total height - mouse Y position
     const containerRect = document.querySelector('.main-editor').getBoundingClientRect();
-    const newHeight = containerRect.bottom - e.clientY;
+    const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+
+    if (!clientY) return;
+
+    const newHeight = containerRect.bottom - clientY;
 
     if (newHeight >= 100 && newHeight <= containerRect.height - 100) {
         terminalContainer.style.height = `${newHeight}px`;
     }
-});
+}
 
-document.addEventListener('mouseup', () => {
+document.addEventListener('mousemove', handleMouseMove);
+document.addEventListener('touchmove', (e) => {
+    if (isResizing) {
+        handleMouseMove(e.touches[0]);
+        if (e.cancelable) e.preventDefault(); // Prevent scrolling while resizing
+    }
+}, { passive: false });
+
+function stopResizing() {
     if (isResizing) {
         isResizing = false;
         resizer.classList.remove('resizing');
         document.body.style.cursor = '';
         document.body.style.userSelect = '';
     }
-});
+}
+
+document.addEventListener('mouseup', stopResizing);
+document.addEventListener('touchend', stopResizing);
 // Mobile Sidebar Logic
 const sidebarToggleBtn = document.getElementById('sidebar-toggle');
 const sidebar = document.querySelector('.sidebar');

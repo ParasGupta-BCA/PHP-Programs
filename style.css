@@ -431,6 +431,8 @@ pre[class*="language-"] {
     justify-content: center;
     flex-shrink: 0;
     transition: all 0.2s;
+    touch-action: none;
+    /* Critical for mobile touch resizing */
 }
 
 .resizer:hover,
