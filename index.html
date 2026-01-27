@@ -10,14 +10,16 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://parasgupta-bca.github.io/PHP-Programs/">
     <meta property="og:title" content="PHP Portfolio | Paras Gupta">
-    <meta property="og:description" content="Interactive PHP Code Repository & Portfolio. Browse, run, and explore PHP programs directly in your browser.">
+    <meta property="og:description"
+        content="Interactive PHP Code Repository & Portfolio. Browse, run, and explore PHP programs directly in your browser.">
     <meta property="og:image" content="https://parasgupta-bca.github.io/PHP-Programs/og-image.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://parasgupta-bca.github.io/PHP-Programs/">
     <meta property="twitter:title" content="PHP Portfolio | Paras Gupta">
-    <meta property="twitter:description" content="Interactive PHP Code Repository & Portfolio. Browse, run, and explore PHP programs directly in your browser.">
+    <meta property="twitter:description"
+        content="Interactive PHP Code Repository & Portfolio. Browse, run, and explore PHP programs directly in your browser.">
     <meta property="twitter:image" content="https://parasgupta-bca.github.io/PHP-Programs/og-image.png">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,16 +56,22 @@
             </div>
 
             <div class="file-list-container">
-                <div style="display: flex; justify-content: space-between; align-items: center; padding-right: 20px;">
-                    <h3>Explorer</h3>
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px 10px 25px;">
+                    <h3 style="padding: 0;">Explorer</h3>
                     <button id="refresh-files" class="icon-btn" title="Refresh File List">
                         <ion-icon name="refresh-outline"></ion-icon>
                     </button>
                 </div>
                 <!-- Search Bar -->
-                <div class="search-container">
-                    <ion-icon name="search-outline"></ion-icon>
-                    <input type="text" id="file-search" placeholder="Search programs...">
+                <div class="search-wrapper">
+                    <div class="search-box">
+                        <ion-icon name="search-outline"></ion-icon>
+                        <input type="text" id="file-search" placeholder="Search programs..." autocomplete="off">
+                        <button id="clear-search" class="clear-btn" title="Clear search" style="display: none;">
+                            <ion-icon name="close-circle"></ion-icon>
+                        </button>
+                    </div>
                 </div>
                 <ul id="file-list" class="file-list">
                     <!-- Files will be injected here -->

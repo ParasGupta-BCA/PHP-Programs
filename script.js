@@ -11,7 +11,10 @@ const outputConsole = document.getElementById('output-console');
 const clearConsoleBtn = document.getElementById('clear-console');
 const refreshFilesBtn = document.getElementById('refresh-files');
 const fileSearchInput = document.getElementById('file-search');
+const clearSearchBtn = document.getElementById('clear-search');
 const copyBtn = document.getElementById('copy-btn');
+
+let currentSearchTerm = '';
 
 const CACHE_KEY = 'php_repos_cache_v1';
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
@@ -36,8 +39,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // Search functionality
     if (fileSearchInput) {
         fileSearchInput.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            filterFiles(searchTerm);
+            currentSearchTerm = e.target.value.toLowerCase();
+            filterFiles(currentSearchTerm);
+
+            // Toggle clear button
+            if (clearSearchBtn) {
+                clearSearchBtn.style.display = currentSearchTerm ? 'flex' : 'none';
+            }
+        });
+    }
+
+    if (clearSearchBtn) {
+        clearSearchBtn.addEventListener('click', () => {
+            fileSearchInput.value = '';
+            currentSearchTerm = '';
+            filterFiles('');
+            clearSearchBtn.style.display = 'none';
+            fileSearchInput.focus();
         });
     }
 
@@ -152,19 +170,43 @@ async function fetchFiles(isBackground = false) {
         li.onclick = () => loadFile(file, li);
         fileListEl.appendChild(li);
     });
+
+    // Re-apply search filter if active
+    if (currentSearchTerm) {
+        filterFiles(currentSearchTerm);
+    }
 }
 
 // Filter files based on search term
 function filterFiles(term) {
     const items = fileListEl.querySelectorAll('.file-item');
+    let foundCount = 0;
+
     items.forEach(item => {
-        const fileName = item.innerText.toLowerCase();
+        const fileName = item.innerText.trim().toLowerCase();
         if (fileName.includes(term)) {
-            item.style.display = 'flex';
+            item.style.setProperty('display', 'flex', 'important');
+            foundCount++;
         } else {
-            item.style.display = 'none';
+            item.style.setProperty('display', 'none', 'important');
         }
     });
+
+    // Handle "No results" message
+    const existingNoResults = fileListEl.querySelector('.no-results');
+    if (foundCount === 0 && term !== '') {
+        if (!existingNoResults) {
+            const noRes = document.createElement('li');
+            noRes.className = 'file-item no-results';
+            noRes.style.cursor = 'default';
+            noRes.style.color = 'var(--text-muted)';
+            noRes.style.justifyContent = 'center';
+            noRes.innerHTML = 'No matches found';
+            fileListEl.appendChild(noRes);
+        }
+    } else if (existingNoResults) {
+        existingNoResults.remove();
+    }
 }
 
 // Poll for updates every 5 minutes (reduced from 60s to save API calls)
@@ -202,7 +244,7 @@ async function loadFile(file, element) {
 
         runBtn.disabled = false;
         runBtn.innerHTML = '<ion-icon name="play"></ion-icon> Run Code';
-        
+
         if (copyBtn) copyBtn.disabled = false;
 
         // Log to terminal
@@ -216,18 +258,17 @@ async function loadFile(file, element) {
 }
 
 // Copy Code to Clipboard
+// Copy Code to Clipboard with Fallback
 async function copyToClipboard() {
     if (!currentCode) return;
 
-    try {
-        await navigator.clipboard.writeText(currentCode);
-        
+    const copySuccess = () => {
         // Show success tooltip
         const tooltip = document.createElement('div');
         tooltip.className = 'copy-tooltip';
         tooltip.innerText = 'Copied!';
         copyBtn.parentElement.appendChild(tooltip);
-        
+
         setTimeout(() => tooltip.classList.add('show'), 10);
         setTimeout(() => {
             tooltip.classList.remove('show');
@@ -235,14 +276,52 @@ async function copyToClipboard() {
         }, 2000);
 
         // Change icon temporarily
-        const originalIcon = copyBtn.querySelector('ion-icon').name;
-        copyBtn.querySelector('ion-icon').name = 'checkmark-outline';
-        setTimeout(() => {
-            copyBtn.querySelector('ion-icon').name = originalIcon;
-        }, 2000);
+        const iconEl = copyBtn.querySelector('ion-icon');
+        if (iconEl) {
+            const originalIcon = iconEl.name;
+            iconEl.name = 'checkmark-outline';
+            setTimeout(() => {
+                iconEl.name = originalIcon;
+            }, 2000);
+        }
+    };
 
+    // Try modern API first
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        try {
+            await navigator.clipboard.writeText(currentCode);
+            copySuccess();
+            return;
+        } catch (err) {
+            console.warn('Clipboard API failed, trying fallback...', err);
+        }
+    }
+
+    // Fallback: Temporary Textarea
+    try {
+        const textArea = document.createElement('textarea');
+        textArea.value = currentCode;
+
+        // Ensure textarea is not visible but part of DOM
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-9999px';
+        textArea.style.top = '0';
+        document.body.appendChild(textArea);
+
+        textArea.focus();
+        textArea.select();
+
+        const successful = document.execCommand('copy');
+        document.body.removeChild(textArea);
+
+        if (successful) {
+            copySuccess();
+        } else {
+            throw new Error('execCommand copy failed');
+        }
     } catch (err) {
-        console.error('Failed to copy: ', err);
+        console.error('Copy fallback failed: ', err);
+        alert('Could not copy code. Please select and copy manually.');
     }
 }
 
