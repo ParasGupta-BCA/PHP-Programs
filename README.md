@@ -34,6 +34,7 @@ Below is an automatically updated list of all PHP programs available in this rep
 - [📄 Switch_Case.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/Switch_Case.php)
 - [📄 array.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/array.php)
 - [📄 as-array.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/as-array.php)
+- [📄 associate-array.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/associate-array.php)
 - [📄 bitwise.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/bitwise.php)
 - [📄 calculate_truth_table.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/calculate_truth_table.php)
 - [📄 code.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/code.php)
