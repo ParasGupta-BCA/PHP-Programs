@@ -2,7 +2,7 @@
 // Creating a multidimensional associative array
 $Student = array(
     array(
-        "name" => "NP",
+        "name" => "Nripesh Kumar",
         "course" => "Teacher",
         "Semester" => 6
     ),
