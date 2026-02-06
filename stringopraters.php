@@ -5,4 +5,3 @@ $y="World";
 echo $x.$y;
 
 $x.=$y
-?>
