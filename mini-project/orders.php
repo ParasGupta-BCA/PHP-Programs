@@ -6,6 +6,14 @@
 require_once __DIR__ . '/orders-helper.php';
 require_once __DIR__ . '/products-data.php';
 
+// Handle Clear Data Request
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clear_data'])) {
+    $file = get_orders_file();
+    file_put_contents($file, json_encode([])); // Clear file content
+    header("Location: orders.php"); // Refresh page
+    exit;
+}
+
 // Build product image lookup map
 $productImages = [];
 foreach ($malls as $cat) {
@@ -33,6 +41,7 @@ $orders = load_orders();
             --text: #111;
             --text-muted: #525252;
             --accent: #111;
+            --danger: #dc2626;
             --radius: 20px;
             --radius-sm: 12px;
             --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
@@ -69,6 +78,7 @@ $orders = load_orders();
             padding-bottom: 0.75rem;
             border-bottom: 1px solid var(--glass-border);
         }
+        .nav-group { display: flex; align-items: center; gap: 1rem; }
         .nav-top a {
             color: var(--text-muted);
             text-decoration: none;
@@ -76,6 +86,21 @@ $orders = load_orders();
         }
         .nav-top a:hover { color: var(--text); }
         .nav-top .brand { color: var(--text); font-weight: 600; }
+        
+        /* Clear Data Button */
+        .btn-clear {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .btn-clear:hover { opacity: 0.9; }
+
         .card {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
@@ -155,17 +180,71 @@ $orders = load_orders();
             font-size: 0.9rem;
             font-weight: 600;
         }
-        .btn:hover { background: #333; }
-        .foot { text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--glass-border); }
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-box {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            animation: popIn 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+        }
+        @keyframes popIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .modal-icon {
+            width: 60px; height: 60px;
+            background: #Fee2e2;
+            color: #dc2626;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+        }
+        .modal-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; color: #111; }
+        .modal-desc { color: #666; margin-bottom: 1.5rem; line-height: 1.5; font-size: 0.95rem; }
+        .modal-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .btn-modal {
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        .btn-cancel { background: #f3f4f6; color: #374151; }
+        .btn-confirm { background: #dc2626; color: #fff; }
+        .btn-cancel:hover { background: #e5e7eb; }
+        .btn-confirm:hover { background: #b91c1c; }
     </style>
 </head>
 <body>
     <div class="container">
         <header class="page-header">
             <div class="nav-top">
-                <a href="Assignment.php">← Home</a>
-                <a href="Assignment.php" class="brand">Prabhdeep Mega Mart</a>
-                <a href="Assignment2.php">Place Order</a>
+                <div class="nav-group">
+                    <a href="Assignment.php">← Home</a>
+                    <a href="Assignment.php" class="brand">Prabhdeep Mega Mart</a>
+                </div>
+                <div class="nav-group">
+                    <a href="Assignment2.php">Place Order</a>
+                    <?php if (!empty($orders)): ?>
+                        <button type="button" onclick="showClearModal()" class="btn-clear">Clear All Store Data</button>
+                    <?php endif; ?>
+                </div>
             </div>
             <h1>Order Management</h1>
             <p>Orders you have placed — view all details here</p>
@@ -197,6 +276,7 @@ $orders = load_orders();
                             <p><strong>Phone:</strong> <?= htmlspecialchars($order['phone']) ?></p>
                         <?php endif; ?>
                         <p><strong>Address:</strong> <?= htmlspecialchars($order['address'] ?? '') ?></p>
+                        <p><strong>Payment:</strong> <?= htmlspecialchars($order['payment_method'] ?? 'Standard Payment') ?></p>
                     </div>
                     <table class="items-table">
                         <thead>
@@ -235,5 +315,46 @@ $orders = load_orders();
         <?php endif; ?>
         <p class="foot">Prabhdeep Mega Mart – Mini Project (Order Processing System)</p>
     </div>
-</body>
-</html>
+
+    <!-- Hidden Form for submission -->
+    <form id="clearForm" method="POST" style="display:none;">
+        <input type="hidden" name="clear_data" value="1">
+    </form>
+
+    <!-- Custom Modal -->
+    <div id="confirmModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+            </div>
+            <h3 class="modal-title">Clear Store Data</h3>
+            <p class="modal-desc">This will permanently delete all order history from the server and your local device. This action cannot be undone.</p>
+            <div class="modal-actions">
+                <button onclick="closeModal()" class="btn-modal btn-cancel">Cancel</button>
+                <button onclick="confirmAction()" class="btn-modal btn-confirm">Yes, Delete All</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('confirmModal');
+        
+        function showClearModal() {
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        function confirmAction() {
+            // Updated clear requirement logic
+            localStorage.removeItem('orderHistory');
+            document.getElementById('clearForm').submit();
+        }
+
+        // Close on outside click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+    </script>
