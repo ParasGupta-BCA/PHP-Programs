@@ -50,8 +50,10 @@ Below is an automatically updated list of all PHP programs available in this rep
 - [📄 rectangle.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/rectangle.php)
 - [📄 reference.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/reference.php)
 - [📄 spaceship_opratior.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/spaceship_opratior.php)
+- [📄 str-upper-and-lower.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/str-upper-and-lower.php)
 - [📄 stringopraters.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/stringopraters.php)
 - [📄 truth_tables.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/truth_tables.php)
+- [📄 ucfirst.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/ucfirst.php)
 <!-- FILES_END -->
 
 ---
