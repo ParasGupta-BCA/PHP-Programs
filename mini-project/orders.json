@@ -1,0 +1,150 @@
+[
+    {
+        "order_id": "ORD-F8A43D",
+        "date": "17 Feb 2026, 06:15 AM",
+        "customer_name": "Paras Gupta",
+        "email": "khushirajpal@icloud.com",
+        "address": "sfewsfserfcwez",
+        "phone": "",
+        "items": [
+            {
+                "id": 3,
+                "name": "Milk",
+                "price": 70,
+                "qty": 7,
+                "subtotal": 490,
+                "image": "images\/milk.svg"
+            },
+            {
+                "id": 4,
+                "name": "Eggs (Dozen)",
+                "price": 250,
+                "qty": 6,
+                "subtotal": 1500,
+                "image": "images\/eggs-dozen-.svg"
+            }
+        ],
+        "total": 1990
+    },
+    {
+        "order_id": "ORD-CECAF0",
+        "date": "17 Feb 2026, 05:53 AM",
+        "customer_name": "Paras Gupta",
+        "email": "khushiirajpal4@gmail.com",
+        "address": "New Delhi",
+        "phone": "",
+        "items": [
+            {
+                "id": 1,
+                "name": "Rice",
+                "price": 200,
+                "qty": 6,
+                "subtotal": 1200,
+                "image": "images\/rice.svg"
+            },
+            {
+                "id": 2,
+                "name": "Soft Drinks",
+                "price": 150,
+                "qty": 8,
+                "subtotal": 1200,
+                "image": "images\/soft-drinks.svg"
+            },
+            {
+                "id": 5,
+                "name": "Flour (1 kg)",
+                "price": 90,
+                "qty": 4,
+                "subtotal": 360,
+                "image": "images\/flour-1-kg-.svg"
+            }
+        ],
+        "total": 2760
+    },
+    {
+        "order_id": "ORD-EE8625",
+        "date": "16 Feb 2026, 05:28 AM",
+        "customer_name": "Paras Gupta",
+        "email": "parasgupta4494@gmail.com",
+        "address": "new delhi",
+        "phone": "",
+        "items": [
+            {
+                "id": 1,
+                "name": "Rice",
+                "price": 200,
+                "qty": 3,
+                "subtotal": 600,
+                "image": "images\/rice.svg"
+            },
+            {
+                "id": 2,
+                "name": "Soft Drinks",
+                "price": 150,
+                "qty": 6,
+                "subtotal": 900,
+                "image": "images\/soft-drinks.svg"
+            },
+            {
+                "id": 3,
+                "name": "Milk",
+                "price": 70,
+                "qty": 5,
+                "subtotal": 350,
+                "image": "images\/milk.svg"
+            },
+            {
+                "id": 4,
+                "name": "Eggs (Dozen)",
+                "price": 250,
+                "qty": 7,
+                "subtotal": 1750,
+                "image": "images\/eggs-dozen-.svg"
+            },
+            {
+                "id": 5,
+                "name": "Flour (1 kg)",
+                "price": 90,
+                "qty": 8,
+                "subtotal": 720,
+                "image": "images\/flour-1-kg-.svg"
+            },
+            {
+                "id": 6,
+                "name": "Sugar (1 kg)",
+                "price": 80,
+                "qty": 4,
+                "subtotal": 320,
+                "image": "images\/sugar-1-kg-.svg"
+            }
+        ],
+        "total": 4640
+    },
+    {
+        "order_id": "ORD-3E56A1",
+        "date": "16 Feb 2026, 05:23 AM",
+        "customer_name": "Paras Gupta",
+        "email": "parasgupta4494@gmail.com",
+        "address": "new delhi",
+        "phone": "",
+        "items": [
+            {
+                "id": 1,
+                "name": "Rice",
+                "price": 200,
+                "qty": 2,
+                "subtotal": 400,
+                "image": "images\/rice.svg"
+            },
+            {
+                "id": 2,
+                "name": "Soft Drinks",
+                "price": 150,
+                "qty": 5,
+                "subtotal": 750,
+                "image": "images\/soft-drinks.svg"
+            }
+        ],
+        "total": 1150
+    }
+]

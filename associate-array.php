@@ -1,5 +1,5 @@
 <?php
-// Creating a multidimensional associative array
+// Creating an associative array
 $Student = array(
     array(
         "name" => "Nripesh Kumar",
