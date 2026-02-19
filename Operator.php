@@ -27,12 +27,12 @@
      * 5) Logical operator --> (&&),(||),(!)
      * 6) String operator (Also called Concat operator) --> (.),(.=)
      * 7) Array operator
-     * 8) Conditional assignment operator
+     * 8) Conditional assignment operator --> (?)(:)
      *  
      ***/
 
     //Arithmetic oprators in code:
-    echo "Arithmetic Oprators:<br>";
+    echo "<span style='color:red;'>Arithmetic Oprators:</span><br>";
     echo "<br>";
     echo "10+20= ".(10+20)."<br>";
     echo "10-10= ".(10-10)."<br>";
@@ -46,7 +46,7 @@
     $b=60;
     $c=50;
 
-    echo "Relational Oprators:<br>";
+    echo "<span style='color:red;'>Relational Oprators:</span><br>";
     echo "<br>";
     echo "50<60= ".($a<$b)."<br>";
     echo "50>60= ".($a>$b)."<br>";
@@ -74,7 +74,7 @@
     //Increment/Decrement operator
     $a=50;
 
-    echo "Increment/Decrement operator:<br>";
+    echo "<span style='color:red;'>Increment/Decrement operator:</span><br>";
     echo "<br>";
     echo "a=a+1= ".(++$a)."<br>";  // $a=$a+1 --> Pre Increment
     echo "a=a+1= ".($a++)."<br>"; // $a=$a+1 --> Post Increment
@@ -112,7 +112,7 @@
     $a=50;
     $b=60;
 
-    echo "Logical operator:<br>";
+    echo "<span style='color:red;'>Logical operator:</span><br>";
     echo "<br>";
 
     // (&&) AND operator
@@ -154,6 +154,48 @@
      *         If We Write B=0 Then It Will Give False)
      *         
      * ***/
+
+    //String operator (Concat operator)
+    echo "<span style='color:red;'>String operator (Concat operator):</span><br>";
+    echo "<br>";
+
+    // String operator of (.)
+
+    $a=100;
+    echo "Value is: ".$a;
+
+    // String operator of (.=)
+
+    $a=100;
+    $b=10;
+    $a.=$b; //10010
+
+    echo $a."<br>";
+    echo "<br>";
+
+    //Conditional assignment operator
+    echo "<span style='color:red;'>Conditional assignment operator: </span><br>";
+    echo "<br>";
+
+    //Conditional assignment operator for (?)
+    $a=500;
+    $b=1000;
+    $str=$a>$b? "A is the Grater":"B is the Grater";
+
+    echo $str."<br>";
+
+    /*** 
+     * Q3. Now What Will Be Output Of This Code:
+     * 
+     * $str=500? "Hello":"Bye";
+     * echo $str;
+     *
+     * 
+     * Answer: Hello (Becouse it takes 1 as True)   
+     *         
+     * ***/
+    
+    echo "<br>";
 
     ?>
     </h1>
