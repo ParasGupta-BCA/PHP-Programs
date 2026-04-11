@@ -227,16 +227,35 @@ async function fetchFiles(isBackground = false) {
         fileListEl.appendChild(note);
     }
 
+    let currentFolder = '';
+
     phpFiles.forEach((file) => {
-        const li = document.createElement('li');
-        li.className = 'file-item';
         const displayPath = file.path || file.name;
+        
+        let folderName = 'Root';
+        let baseName = displayPath;
+        const lastSlash = displayPath.lastIndexOf('/');
+        if (lastSlash !== -1) {
+            folderName = displayPath.substring(0, lastSlash);
+            baseName = displayPath.substring(lastSlash + 1);
+        }
+
+        if (folderName !== currentFolder) {
+            const header = document.createElement('li');
+            header.className = 'group-header';
+            header.innerHTML = `<ion-icon name="folder-open-outline"></ion-icon> <span>${escapeHtml(folderName)}</span>`;
+            fileListEl.appendChild(header);
+            currentFolder = folderName;
+        }
+
+        const li = document.createElement('li');
+        li.className = 'file-item file-item-indented';
         li.dataset.path = displayPath;
         if (currentActiveFile && (currentActiveFile.path || currentActiveFile.name) === displayPath) {
             li.classList.add('active');
         }
         li.innerHTML = `<ion-icon name="logo-php"></ion-icon><span class="file-item-label">${escapeHtml(
-            displayPath
+            baseName
         )}</span>`;
         li.onclick = () => loadFile(file, li);
         fileListEl.appendChild(li);
@@ -264,6 +283,24 @@ function filterFiles(term) {
         } else {
             item.style.setProperty('display', 'none', 'important');
         }
+    });
+
+    const headers = fileListEl.querySelectorAll('.group-header');
+    headers.forEach((header) => {
+        if (!term) {
+            header.style.display = 'flex';
+            return;
+        }
+        let hasVisible = false;
+        let next = header.nextElementSibling;
+        while (next && !next.classList.contains('group-header')) {
+            if (next.style.display !== 'none' && !next.classList.contains('no-results') && !next.classList.contains('list-banner')) {
+                hasVisible = true;
+                break;
+            }
+            next = next.nextElementSibling;
+        }
+        header.style.display = hasVisible ? 'flex' : 'none';
     });
 
     const existingNoResults = fileListEl.querySelector('.no-results');

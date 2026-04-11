@@ -195,6 +195,27 @@ body {
     list-style: none;
 }
 
+.group-header {
+    padding: 15px 20px 6px 20px;
+    font-size: 0.72rem;
+    color: var(--primary);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.9;
+}
+
+.group-header ion-icon {
+    font-size: 1.1rem;
+}
+
+.file-item-indented {
+    padding-left: 38px !important;
+}
+
 .file-item {
     padding: 10px 20px 10px 22px;
     cursor: pointer;
