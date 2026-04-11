@@ -192,10 +192,10 @@ async function fetchFiles(isBackground = false) {
             console.warn('File list fetch failed, using fallback.', error);
         }
         const fallbackPaths = [
-            'Unit-01-Introduction-to-PHP/U01-SN03-hello-world.php',
-            'Unit-02-Functions-and-Arrays/U02-SN14-arrays-introduction.php',
-            'Unit-03-Strings-Dates-Forms-File-Handling/U03-SN19-strings-basics.php',
-            'Unit-04-Cookies-and-Sessions/U04-SN28-cookies-vs-sessions-demo.php',
+            'Unit-01-Introduction-to-PHP/03-hello-world.php',
+            'Unit-02-Functions-and-Arrays/14-arrays-introduction.php',
+            'Unit-03-Strings-Dates-Forms-File-Handling/19-strings-basics.php',
+            'Unit-04-Cookies-and-Sessions/28-cookies-vs-sessions-demo.php',
         ];
         phpFiles = fallbackPaths.map(fileEntryFromPath);
         listSource = 'fallback';
