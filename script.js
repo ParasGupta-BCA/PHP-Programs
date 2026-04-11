@@ -396,63 +396,45 @@ runBtn.addEventListener('click', async () => {
     runBtn.disabled = true;
     runBtn.innerHTML = '<div class="spinner"></div> Running...';
 
-    renderOutput('Running script...', true);
+    renderOutput('Initializing execution engine...', true);
 
     try {
-        const response = await fetch(PISTON_API, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                language: 'php',
-                version: '8.2.3',
-                files: [{ content: currentCode }],
-            }),
-        });
-
-        const text = await response.text();
-        let result;
-        try {
-            result = JSON.parse(text);
-        } catch {
-            renderOutput(
-                `Run failed: invalid response (${response.status})\n${text.slice(0, 500)}`,
-                true
-            );
-            runBtn.disabled = false;
-            runBtn.innerHTML = '<ion-icon name="play"></ion-icon> Run Code';
-            return;
+        if (!window.phpWasm) {
+            renderOutput('Loading PHP WebAssembly engine (this may take a few seconds on first run)...', true);
+            const module = await import('https://cdn.jsdelivr.net/npm/php-wasm/PhpWeb.mjs');
+            window.phpWasm = new module.PhpWeb();
         }
 
-        if (!response.ok) {
-            const msg = result.message || result.error || text || `HTTP ${response.status}`;
-            renderOutput(`Run failed:\n${msg}`, true);
-            runBtn.disabled = false;
-            runBtn.innerHTML = '<ion-icon name="play"></ion-icon> Run Code';
-            return;
-        }
+        let outputBuffer = '';
+        let errorBuffer = '';
 
-        if (result.compile && result.compile.stderr) {
-            renderOutput(`[Compile]\n${result.compile.stderr}`, true);
-        }
+        const outHandler = (e) => { outputBuffer += e.detail; };
+        const errHandler = (e) => { errorBuffer += e.detail; };
 
-        if (result.run) {
-            let output = result.run.stdout || '';
-            if (result.run.stderr) {
-                output += `${output ? '\n\n' : ''}[PHP stderr]:\n${result.run.stderr}`;
-            }
-            if (result.run.code !== 0 && result.run.code != null) {
-                output += `${output ? '\n\n' : ''}[Exit code: ${result.run.code}]`;
-            }
-            if (!output.trim()) {
-                output = 'Script finished (no output). Tip: session/cookie/forms need a real PHP server, not Piston.';
-            }
-            renderOutput(output);
-        } else {
-            const msg = result.message ? String(result.message) : JSON.stringify(result, null, 2);
-            renderOutput(`Could not run:\n${msg}`, true);
+        // Ensure engine is ready if not already
+        renderOutput('Running script...', true);
+
+        window.phpWasm.addEventListener('output', outHandler);
+        window.phpWasm.addEventListener('error', errHandler);
+
+        const exitCode = await window.phpWasm.run(currentCode);
+
+        window.phpWasm.removeEventListener('output', outHandler);
+        window.phpWasm.removeEventListener('error', errHandler);
+
+        let output = outputBuffer || '';
+        if (errorBuffer) {
+            output += `${output ? '\n\n' : ''}[PHP stderr]:\n${errorBuffer}`;
         }
+        if (exitCode !== 0 && exitCode != null && exitCode !== 255) {
+            output += `${output ? '\n\n' : ''}[Exit code: ${exitCode}]`;
+        }
+        if (!output.trim()) {
+            output = 'Script finished (no output). Tip: session/cookie/forms might need a full PHP local server setup.';
+        }
+        renderOutput(output);
     } catch (error) {
-        renderOutput(`Execution API Error: ${error.message}`, true);
+        renderOutput(`Execution Engine Error: ${error.message}`, true);
     }
 
     runBtn.disabled = false;
