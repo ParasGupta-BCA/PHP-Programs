@@ -87,6 +87,18 @@ Below is an automatically updated list of all PHP programs available in this rep
 - [📄 Unit-04-Cookies-and-Sessions/U04-SN29-cookie-theme-color-preference.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/Unit-04-Cookies-and-Sessions/U04-SN29-cookie-theme-color-preference.php)
 - [📄 Unit-04-Cookies-and-Sessions/U04-SN35-session-chatbox-messages.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/Unit-04-Cookies-and-Sessions/U04-SN35-session-chatbox-messages.php)
 - [📄 Unit-04-Cookies-and-Sessions/U04-SN35-session-income-tax-calculator.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/Unit-04-Cookies-and-Sessions/U04-SN35-session-income-tax-calculator.php)
+- [📄 mini-project/Assignment.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/mini-project/Assignment.php)
+- [📄 mini-project/Assignment2.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/mini-project/Assignment2.php)
+- [📄 mini-project/download_images.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/mini-project/download_images.php)
+- [📄 mini-project/download_svgs.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/mini-project/download_svgs.php)
+- [📄 mini-project/fix_order_images.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/mini-project/fix_order_images.php)
+- [📄 mini-project/generate_svgs.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/mini-project/generate_svgs.php)
+- [📄 mini-project/migrate_orders.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/mini-project/migrate_orders.php)
+- [📄 mini-project/orders-helper.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/mini-project/orders-helper.php)
+- [📄 mini-project/orders.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/mini-project/orders.php)
+- [📄 mini-project/products-data.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/mini-project/products-data.php)
+- [📄 mini-project/test_fix.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/mini-project/test_fix.php)
+- [📄 mini-project/update_images.php](https://github.com/ParasGupta-BCA/PHP-Programs/blob/main/mini-project/update_images.php)
 <!-- FILES_END -->
 
 ---
