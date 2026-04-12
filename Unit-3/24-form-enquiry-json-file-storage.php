@@ -33,14 +33,14 @@
             'phone' => $phone,
             'erp' => $erp
         ];
+
+        // Simple Way To Display
+        print_r($enquiryData);
+        echo "<br>Name: ".$enquiryData['name'];
+
+        // Store In JSON File
         $file = __DIR__ . '/U03-enquiries-data.json';
-        if (file_exists($file)) {
-            $currentData = json_decode(file_get_contents($file), true);
-            $currentData[] = $enquiryData;
-            file_put_contents($file, json_encode($currentData, JSON_PRETTY_PRINT));
-        } else {
-            file_put_contents($file, json_encode([$enquiryData], JSON_PRETTY_PRINT));
-        }
+        file_put_contents($file, json_encode([$enquiryData], JSON_PRETTY_PRINT));
         echo "<p style='text-align: center; color: green;'>Enquiry submitted successfully!</p>";
     }
     ?>
