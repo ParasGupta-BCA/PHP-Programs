@@ -1,39 +1,24 @@
-<!-- Income Tax Calculator with employee id, bs, da (50% of bs), hra (30% of bs), and tax calculation in table format -->
+<!-- Income Tax Calculator with employee id, base_salery, da (50% of base_salery), 
+     hra (30% of base_salery), and tax calculation in table format -->
+
 <?php
 session_start();
 ?>
 
-<!DOCTYPE html>
 <html>
-<head>
-    <title>Income Tax Calculator</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        th, td {
-            padding: 10px;
-        }
-    </style>
-</head>
+    <head>
+        <title>Income Tax Calculator</title>
+    </head>
 <body>
+    <h1>Income Tax Calculator</h1>
 
-<h1>Income Tax Calculator</h1>
+        <form method="post">
 
-<form method="post">
-    <label>Employee ID:</label>
-    <input type="text" name="employee_id" required><br><br>
+            Employee ID:<input type="text" name="employee_id" required><br><br>
+            Basic Salary:<input type="number" name="basic_salary" required><br><br>
 
-    <label>Basic Salary:</label>
-    <input type="number" name="basic_salary" min="0" required><br><br>
-
-    <input type="submit" name="submit" value="Add">
-</form>
-
+            <input type="submit" name="submit" value="Add">
+        </form>
 <?php
 if (isset($_POST['submit'])) {
 
@@ -74,39 +59,43 @@ if (isset($_POST['submit'])) {
         }
 
     } else {
-        echo "<p style='color:red;'>Invalid salary</p>";
+        echo "Invalid salary";
     }
 }
 
-// ✅ Display table
+// ✅ Display records in a simple table
 if (!empty($_SESSION['records'])) {
-
     echo "<h2>All Records</h2>";
-    echo "<table>";
-    echo "<tr>
-            <th>Employee ID</th>
-            <th>Basic Salary</th>
-            <th>DA</th>
-            <th>HRA</th>
-            <th>Net Salary</th>
-          </tr>";
+    
+    echo "<table border='1'>"; // Start table with a basic border
+    
+    // Table headings
+    echo "<tr>";
+    echo "<th>ID</th>";
+    echo "<th>Basic Salary</th>";
+    echo "<th>DA</th>";
+    echo "<th>HRA</th>";
+    echo "<th>Net Salary</th>";
+    echo "</tr>";
 
+    // Loop through each record to create a table row
     foreach ($_SESSION['records'] as $row) {
-        echo "<tr>
-                <td>{$row['id']}</td>
-                <td>" . number_format($row['bs'], 2) . "</td>
-                <td>" . number_format($row['da'], 2) . "</td>
-                <td>" . number_format($row['hra'], 2) . "</td>
-                <td>" . number_format($row['net'], 2) . "</td>
-              </tr>";
+        echo "<tr>";
+        echo "<td>" . $row['id'] . "</td>";
+        echo "<td>" . $row['bs'] . "</td>";
+        echo "<td>" . $row['da'] . "</td>";
+        echo "<td>" . $row['hra'] . "</td>";
+        echo "<td>" . $row['net'] . "</td>";
+        echo "</tr>";
     }
-
-    echo "</table>";
-}
+    
+    echo "</table>"; // End table
+    }
 ?>
 
 </body>
 </html>
+
 <!-- 🧠 1. Concepts Used (Theory)
 🔹 1. Session Handling
 session_start();

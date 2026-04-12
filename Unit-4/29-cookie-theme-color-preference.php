@@ -3,7 +3,7 @@
 // Set cookie when user selects a color
 if (isset($_POST['color'])) {
     $color = $_POST['color'];
-    setcookie("theme_color", $color, time() + (86400 * 30)); // 30 days
+    setcookie("theme_color", $color, time() + (86400)); // 30 days
     $_COOKIE['theme_color'] = $color; // update instantly
 }
 

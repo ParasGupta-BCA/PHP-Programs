@@ -4,38 +4,11 @@ create an html page as home page and display the product details using multi dim
 <html lang="en">
 <head>    
     <title>Prabhdeep Mega Mart</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #06adfa;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-            h1 {
-                color: #5006fa;
-                font-size: 36px;
-                text-align: center;
-            }
-            h2 {
-                font-size: 26px;
-                text-align: center;
-                color: #5006fa;
-            }
-
-    </style>
-</head>
+    </head>
 <body">
     <h1 >Welcome to Prabhdeep Mega Mart</h1>
     <h2 >Product Details</h2>
-    <table>
+    <table border="1">
         <tr>
             <th>Product Name</th>
             <th>Category</th>
@@ -81,32 +54,6 @@ create an html page as home page and display the product details using multi dim
             "name" => "Sugar",
             "price" => 60,
             "stock" => 200
-        )),
-        "Home Appliances" => array(array(
-            "name" => "Refrigerator",
-            "price" => 30000,
-            "stock" => 5
-        ), array(
-            "name" => "Washing Machine",
-            "price" => 25000,
-            "stock" => 8
-        ), array(
-            "name" => "Microwave Oven",
-            "price" => 10000,
-            "stock" => 12
-        )),
-        "Books" => array(array(
-            "name" => "Novel",
-            "price" => 200,
-            "stock" => 30
-        ), array(
-            "name" => "Science Fiction",
-            "price" => 300,
-            "stock" => 20
-        ), array(
-            "name" => "Biography",
-            "price" => 250,
-            "stock" => 15
         )),
         "Toys" => array(array(
             "name" => "Action Figure",

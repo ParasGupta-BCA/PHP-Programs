@@ -10,15 +10,15 @@
 <!-- GET Method -->
 <h2>GET Method</h2>
 <form method="get">
-    Name: <input type="text" name="name"><br><br>
-    Email: <input type="email" name="email"><br><br>
+    Name: <input type="text" name="name" required><br><br>
+    Email: <input type="email" name="email" required><br><br>
     <input type="submit" value="Submit">
 </form>
 <?php
     $name = $_GET['name'];
     $email = $_GET['email'];    
-    echo "GET Method - Name: " . $name . "<br>";
-    echo "GET Method - Email: " . $email;
+    echo "Name: " . $name . "<br>";
+    echo "Email: " . $email;
 ?>
 </body>
 </html>

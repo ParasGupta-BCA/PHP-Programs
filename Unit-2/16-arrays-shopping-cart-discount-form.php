@@ -1,4 +1,6 @@
-<!-- basic shopping cart system with discount functionality user defined discount and we have multiple items as products options and can select multiple items -->
+<!-- basic shopping cart system with discount functionality user defined discount 
+     and we have multiple items as products options and can select multiple items -->
+
 <?php
 $products = [
     "Laptop" => 50000,
@@ -11,11 +13,10 @@ $products = [
 $total = 0;
 ?>
 
-<!DOCTYPE html>
 <html>
-<head>
-    <title>Shopping Cart</title>
-</head>
+    <head>
+        <title>Shopping Cart</title>
+    </head>
 <body>
 
 <h2>Shopping Cart System</h2>
@@ -65,8 +66,13 @@ if (isset($_POST['calculate'])) {
     if (!empty($_POST['product'])) {
 
         echo "<h3>Bill Details:</h3>";
-        echo "<table border='1' cellpadding='10'>";
-        echo "<tr><th>Product</th><th>Qty</th><th>Price</th><th>Subtotal</th></tr>";
+
+        echo "<table border='1'>";
+        echo "<tr><th>Product</th>
+              <th>Qty</th>
+              <th>Price</th>
+              <th>Subtotal</th>
+              </tr>";
 
         foreach ($_POST['product'] as $selected) {
             $price = $products[$selected];
