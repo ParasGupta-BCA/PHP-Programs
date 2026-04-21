@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP Portfolio | Paras Gupta</title>
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://parasgupta-bca.github.io/PHP-Programs/">
+    <meta property="og:title" content="PHP Portfolio | Paras Gupta">
+    <meta property="og:description"
+        content="Interactive PHP Code Repository & Portfolio. Browse, run, and explore PHP programs directly in your browser.">
+    <meta property="og:image" content="https://parasgupta-bca.github.io/PHP-Programs/og-image.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://parasgupta-bca.github.io/PHP-Programs/">
+    <meta property="twitter:title" content="PHP Portfolio | Paras Gupta">
+    <meta property="twitter:description"
+        content="Interactive PHP Code Repository & Portfolio. Browse, run, and explore PHP programs directly in your browser.">
+    <meta property="twitter:image" content="https://parasgupta-bca.github.io/PHP-Programs/og-image.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="favicon_io/site.webmanifest">
+    <link rel="icon" href="favicon_io/favicon.ico">
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <!-- PrismJS for Syntax Highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <ion-icon name="logo-github"></ion-icon>
+                    <span>PHP Repos</span>
+                </div>
+                <p class="subtitle">@ParasGupta-BCA</p>
+            </div>
+
+            <div class="file-list-container">
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px 10px 25px;">
+                    <h3 style="padding: 0;">Explorer</h3>
+                    <button id="refresh-files" class="icon-btn" title="Refresh File List">
+                        <ion-icon name="refresh-outline"></ion-icon>
+                    </button>
+                </div>
+                <!-- Search Bar -->
+                <div class="search-wrapper">
+                    <div class="search-box">
+                        <ion-icon name="search-outline"></ion-icon>
+                        <input type="text" id="file-search" placeholder="Search programs..." autocomplete="off">
+                        <button id="clear-search" class="clear-btn" title="Clear search" style="display: none;">
+                            <ion-icon name="close-circle"></ion-icon>
+                        </button>
+                    </div>
+                </div>
+                <ul id="file-list" class="file-list">
+                    <!-- Files will be injected here -->
+                    <div class="loading-spinner">
+                        <div class="spinner"></div>
+                    </div>
+                </ul>
+            </div>
+
+            <div class="sidebar-footer">
+                <a href="https://github.com/ParasGupta-BCA/PHP-Programs" target="_blank" class="github-link">
+                    <ion-icon name="logo-github"></ion-icon> Open Repository
+                </a>
+                <p class="copyright">
+                    Made with <ion-icon name="heart" class="heart-icon"></ion-icon> by <a
+                        href="https://github.com/ParasGupta-BCA" target="_blank">Paras Gupta</a>
+                </p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-editor">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <button id="sidebar-toggle" class="icon-btn sidebar-toggle">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </button>
+                <div class="current-file">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                    <span id="current-filename">Select a file to view</span>
+                </div>
+                <div class="actions">
+                    <button id="copy-btn" class="icon-btn" title="Copy Code" disabled style="margin-right: 5px;">
+                        <ion-icon name="copy-outline"></ion-icon>
+                    </button>
+                    <button id="run-btn" class="btn btn-primary" disabled>
+                        <ion-icon name="play"></ion-icon> Run Code
+                    </button>
+                    <span class="badge">PHP 8.2</span>
+                </div>
+            </div>
+
+            <!-- Code Editor Area -->
+            <div class="editor-container" id="editor-container">
+                <pre><code id="code-display" class="language-php">// Select a file from the sidebar to view code...</code></pre>
+            </div>
+
+            <!-- Resizer Handle -->
+            <div id="resizer" class="resizer">
+                <div class="resizer-handle"></div>
+            </div>
+
+            <!-- Terminal/Output Area -->
+            <div class="terminal-container" id="terminal-container">
+                <div class="terminal-header">
+                    <div class="window-controls">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                    </div>
+                    <span class="terminal-title"><ion-icon name="terminal-outline"></ion-icon> Terminal Output</span>
+                    <button id="clear-console" class="icon-btn" title="Clear Console"><ion-icon
+                            name="trash-outline"></ion-icon></button>
+                </div>
+                <div class="terminal-body">
+                    <iframe id="output-frame" title="Output" sandbox="allow-scripts allow-same-origin"></iframe>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Prism JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup-templating.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
+    <script src="script.js?v=1.0"></script>
+</body>
+
+</html>
