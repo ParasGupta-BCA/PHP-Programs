@@ -45,23 +45,16 @@ body {
     background: radial-gradient(circle at top left, #161b22, #0d1117 60%);
 }
 
-/* Scrollbars - Chrome/Safari/Edge */
+/* Hide scrollbars globally but keep scroll functionality */
 ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    display: none;
+    width: 0;
+    height: 0;
 }
 
-::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--border);
-    border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--text-muted);
+* {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 
 /* Layout */
