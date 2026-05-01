@@ -104,12 +104,6 @@
                     <span id="current-filename">Select a file to view</span>
                 </div>
                 <div class="actions">
-                    <button id="zoom-out-btn" class="icon-btn" title="Zoom Out" disabled style="margin-right: 5px;">
-                        <ion-icon name="remove-circle-outline"></ion-icon>
-                    </button>
-                    <button id="zoom-in-btn" class="icon-btn" title="Zoom In" disabled style="margin-right: 5px;">
-                        <ion-icon name="add-circle-outline"></ion-icon>
-                    </button>
                     <button id="copy-btn" class="icon-btn" title="Copy Code" disabled style="margin-right: 5px;">
                         <ion-icon name="copy-outline"></ion-icon>
                     </button>
@@ -122,6 +116,15 @@
 
             <!-- Code Editor Area -->
             <div class="editor-container" id="editor-container">
+                <div class="zoom-controls" style="position: sticky; top: 15px; right: 15px; float: right; display: flex; align-items: center; gap: 8px; background: rgba(22, 27, 34, 0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 4px 10px; border-radius: 20px; border: 1px solid var(--glass-border); box-shadow: var(--shadow-md); z-index: 10; margin-left: 10px; margin-bottom: 10px;">
+                    <button id="zoom-out-btn" class="icon-btn" title="Zoom Out" disabled style="padding: 2px;">
+                        <ion-icon name="remove-outline"></ion-icon>
+                    </button>
+                    <span id="zoom-level" style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--text-main); min-width: 35px; text-align: center;">100%</span>
+                    <button id="zoom-in-btn" class="icon-btn" title="Zoom In" disabled style="padding: 2px;">
+                        <ion-icon name="add-outline"></ion-icon>
+                    </button>
+                </div>
                 <pre><code id="code-display" class="language-php">// Select a file from the sidebar to view code...</code></pre>
             </div>
 

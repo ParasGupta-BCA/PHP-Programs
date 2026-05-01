@@ -18,6 +18,7 @@ const clearSearchBtn = document.getElementById('clear-search');
 const copyBtn = document.getElementById('copy-btn');
 const zoomInBtn = document.getElementById('zoom-in-btn');
 const zoomOutBtn = document.getElementById('zoom-out-btn');
+const zoomLevelEl = document.getElementById('zoom-level');
 
 let currentFontSize = 14;
 let currentSearchTerm = '';
@@ -141,20 +142,29 @@ document.addEventListener('DOMContentLoaded', () => {
         copyBtn.addEventListener('click', copyToClipboard);
     }
 
-    if (zoomInBtn) {
-        zoomInBtn.addEventListener('click', () => {
-            currentFontSize += 2;
+    function updateZoom(delta) {
+        let newSize = currentFontSize + delta;
+        if (newSize < 8) newSize = 8;
+        if (newSize > 40) newSize = 40;
+        
+        if (newSize !== currentFontSize) {
+            currentFontSize = newSize;
             codeDisplayEl.style.setProperty('font-size', `${currentFontSize}px`, 'important');
-        });
+            if (codeDisplayEl.parentElement) {
+                codeDisplayEl.parentElement.style.setProperty('font-size', `${currentFontSize}px`, 'important');
+            }
+            if (zoomLevelEl) {
+                zoomLevelEl.innerText = `${Math.round((currentFontSize / 14) * 100)}%`;
+            }
+        }
+    }
+
+    if (zoomInBtn) {
+        zoomInBtn.addEventListener('click', () => updateZoom(2));
     }
 
     if (zoomOutBtn) {
-        zoomOutBtn.addEventListener('click', () => {
-            if (currentFontSize > 8) {
-                currentFontSize -= 2;
-                codeDisplayEl.style.setProperty('font-size', `${currentFontSize}px`, 'important');
-            }
-        });
+        zoomOutBtn.addEventListener('click', () => updateZoom(-2));
     }
 });
 
