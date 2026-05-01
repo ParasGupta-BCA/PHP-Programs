@@ -459,6 +459,15 @@ pre[class*="language-"] {
     line-height: 1.6 !important;
     padding: 25px !important;
     text-shadow: none !important;
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+}
+
+code[class*="language-"] {
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
 }
 
 /* Resizer */
