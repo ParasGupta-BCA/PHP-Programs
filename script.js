@@ -16,7 +16,10 @@ const refreshFilesBtn = document.getElementById('refresh-files');
 const fileSearchInput = document.getElementById('file-search');
 const clearSearchBtn = document.getElementById('clear-search');
 const copyBtn = document.getElementById('copy-btn');
+const zoomInBtn = document.getElementById('zoom-in-btn');
+const zoomOutBtn = document.getElementById('zoom-out-btn');
 
+let currentFontSize = 14;
 let currentSearchTerm = '';
 
 const CACHE_KEY = 'php_repos_cache_v5';
@@ -136,6 +139,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (copyBtn) {
         copyBtn.addEventListener('click', copyToClipboard);
+    }
+
+    if (zoomInBtn) {
+        zoomInBtn.addEventListener('click', () => {
+            currentFontSize += 2;
+            codeDisplayEl.style.setProperty('font-size', `${currentFontSize}px`, 'important');
+        });
+    }
+
+    if (zoomOutBtn) {
+        zoomOutBtn.addEventListener('click', () => {
+            if (currentFontSize > 8) {
+                currentFontSize -= 2;
+                codeDisplayEl.style.setProperty('font-size', `${currentFontSize}px`, 'important');
+            }
+        });
     }
 });
 
@@ -357,12 +376,16 @@ async function loadFile(file, element) {
         runBtn.innerHTML = '<ion-icon name="play"></ion-icon> Run Code';
 
         if (copyBtn) copyBtn.disabled = false;
+        if (zoomInBtn) zoomInBtn.disabled = false;
+        if (zoomOutBtn) zoomOutBtn.disabled = false;
 
         renderOutput(`Loaded file: ${file.path || file.name}\nReady to execute...`, true);
     } catch (error) {
         codeDisplayEl.innerHTML = `// Error loading file: ${escapeHtml(error.message)}`;
         runBtn.innerHTML = '<ion-icon name="alert-circle"></ion-icon> Error';
         if (copyBtn) copyBtn.disabled = true;
+        if (zoomInBtn) zoomInBtn.disabled = true;
+        if (zoomOutBtn) zoomOutBtn.disabled = true;
         renderOutput(`Load error: ${error.message}`, true);
     }
 }

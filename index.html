@@ -104,6 +104,12 @@
                     <span id="current-filename">Select a file to view</span>
                 </div>
                 <div class="actions">
+                    <button id="zoom-out-btn" class="icon-btn" title="Zoom Out" disabled style="margin-right: 5px;">
+                        <ion-icon name="remove-circle-outline"></ion-icon>
+                    </button>
+                    <button id="zoom-in-btn" class="icon-btn" title="Zoom In" disabled style="margin-right: 5px;">
+                        <ion-icon name="add-circle-outline"></ion-icon>
+                    </button>
                     <button id="copy-btn" class="icon-btn" title="Copy Code" disabled style="margin-right: 5px;">
                         <ion-icon name="copy-outline"></ion-icon>
                     </button>
@@ -149,6 +155,19 @@
         src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup-templating.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
     <script src="script.js?v=2.1"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then((registration) => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.error('ServiceWorker registration failed: ', error);
+                    });
+            });
+        }
+    </script>
 </body>
 
 </html>
