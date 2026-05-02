@@ -23,7 +23,7 @@ const zoomLevelEl = document.getElementById('zoom-level');
 let currentFontSize = 14;
 let currentSearchTerm = '';
 
-const CACHE_KEY = 'php_repos_cache_v5';
+const CACHE_KEY = 'php_repos_cache_v6';
 const CACHE_DURATION = 5 * 60 * 1000;
 
 let currentCode = '';
@@ -59,6 +59,18 @@ function fileEntryFromPath(path) {
     };
 }
 
+function customPathSort(a, b) {
+    const aLower = a.toLowerCase();
+    const bLower = b.toLowerCase();
+    const isAExternal = aLower.startsWith('external_exam_preparation/');
+    const isBExternal = bLower.startsWith('external_exam_preparation/');
+    
+    if (isAExternal && !isBExternal) return -1;
+    if (!isAExternal && isBExternal) return 1;
+    
+    return aLower.localeCompare(bLower, undefined, { sensitivity: 'base' });
+}
+
 /** Prefer static manifest shipped with the site (no GitHub API limits on GitHub Pages). */
 async function fetchFileListFromManifest() {
     const url = `${manifestFetchUrl()}?v=${MANIFEST_META.version}`;
@@ -70,7 +82,7 @@ async function fetchFileListFromManifest() {
     const normalized = paths
         .filter((p) => typeof p === 'string' && p.endsWith('.php'))
         .map((p) => p.replace(/\\/g, '/'));
-    normalized.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+    normalized.sort(customPathSort);
     return normalized.map(fileEntryFromPath);
 }
 
@@ -97,7 +109,7 @@ async function fetchPhpTreeList() {
     return treeData.tree
         .filter((e) => e.type === 'blob' && e.path.endsWith('.php'))
         .map((e) => fileEntryFromPath(e.path))
-        .sort((a, b) => a.path.localeCompare(b.path, undefined, { sensitivity: 'base' }));
+        .sort((a, b) => customPathSort(a.path, b.path));
 }
 
 function escapeHtml(str) {
