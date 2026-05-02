@@ -662,7 +662,7 @@ document.getElementById('file-list').addEventListener('click', (e) => {
         item &&
         !item.classList.contains('list-banner') &&
         !item.classList.contains('no-results') &&
-        window.innerWidth <= 768
+        window.innerWidth <= 1024
     ) {
         closeSidebar();
     }
