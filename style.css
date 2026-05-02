@@ -647,6 +647,8 @@ code[class*="language-"] {
 /* Sidebar Toggle Button (Hidden on Desktop) */
 .sidebar-toggle {
     display: none;
+    align-items: center;
+    justify-content: center;
     font-size: 1.4rem;
     color: var(--text-main);
     padding: 8px;
@@ -656,7 +658,7 @@ code[class*="language-"] {
 }
 
 /* Mobile and Tablet Responsive */
-@media (max-width: 1024px) {
+@media (max-width: 1366px) {
     .app-container {
         flex-direction: column;
         position: relative;
